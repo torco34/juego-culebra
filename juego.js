@@ -1,5 +1,5 @@
 //variable universa//
-var velocidad = 300;
+var velocidad = 80;
 var tamano = 10;
 
 
@@ -19,6 +19,7 @@ class objeto {
 	}
 
 }
+
 
 class Cola extends objeto {
 	constructor(x, y) {
@@ -48,8 +49,11 @@ class Cola extends objeto {
 			this.siguiente.meter();
 		}
 	}
-
+verSiguiente(){
+   return this.siguiente;
 }
+}
+
 
 class Comida extends objeto{
 	constructor(){
@@ -64,17 +68,21 @@ class Comida extends objeto{
 		return num;
 	}
 
+
 	colocar(){
 		this.x = this.generar();
 		this.y = this.generar();
 
 	}
 
+
 	dibujar(ctx){
 		ctx.fillStyle = "#00BFFF"; 
 		ctx.fillRect(this.x, this.y, this.tamano, this.tamano)
 	}
 }
+
+
 //objeto del juego
 var cabeza = new Cola(20,20);
 var comida = new Comida();
@@ -88,6 +96,7 @@ function movimiento(){
 	cabeza.setxy(nx,ny);
 }
 ///control de movimiento
+
 
 function control(event){
 	var cod = event.keyCode;
@@ -127,6 +136,37 @@ function control(event){
 
 
 
+function choquecuerpo(){
+	var temp = null;
+	try{
+		temp = cabeza.verSiguiente().verSiguiente();
+	}catch(err){
+		temp =  null;
+	}
+
+	while(temp != null){
+		if(cabeza.choque(temp)){
+		//fin del juego
+		findeljuego();
+	}else{
+		temp = temp.verSiguiente();
+
+	}
+
+} 
+
+}
+
+
+function findeljuego(){
+	xdir = 0;
+	ydir = 0;
+	ejex = true;
+	ejey = true;
+	cabeza = new Cola(20,20);
+	comida = new comida();
+	alert("perdiste");
+}
 
 function dibujar(){
 	
@@ -142,6 +182,7 @@ function dibujar(){
 }
 
 function main(){
+	choquecuerpo("");
 	dibujar();
 	movimiento();
 	if(cabeza.choque(comida)){
